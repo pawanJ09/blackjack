@@ -41,7 +41,6 @@ class Game:
         self.deal()
         self.print_stats()
         self.start_game()
-        self.start_dealer_game()
         self.evaluate_results()
         pass
 
@@ -50,8 +49,7 @@ class Game:
 
     def print_stats(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('Players ==> \n{}'.format("\n".join([str(player) for player in self.players
-                                                   if player.player_name != "Dealer"])))
+        print('Players ==> \n{}'.format("\n".join([str(player) for player in self.players])))
 
     def print_winners(self):
         print('Winners ==> \n{}'.format("\n".join([str(player) for player in self.winners])))
@@ -104,16 +102,23 @@ class Game:
                 player.cards_total += card.value
 
     def start_game(self):
-        stay_list = list('H'*(len(self.players)-1))  # Doing -1 as not counting the dealer
+        stay_list = list('H'*len(self.players))  # Doing -1 as not counting the dealer
+        player_choice = ''
         # Will only break if all players excluding the Dealer are at Stay
         while 'H' in stay_list:
-            for count, player in enumerate(self.players):
-                if player.player_name != "Dealer" and 'S' != stay_list[count]:
-                    player_choice = input(f'{player.player_name} Press H to Hit and S to Stay: ')
-                    if player_choice == 'H':
-                        self.player_hit(player, stay_list, count)
+            for count, p in enumerate(self.players):
+                if 'S' != stay_list[count]:
+                    if p.player_name != "Dealer":
+                        player_choice = input(f'{p.player_name} Press H to Hit and S to Stay: ')
+                        if player_choice == 'H':
+                            self.player_hit(p, stay_list, count)
+                        else:
+                            self.player_stay(p, stay_list, count)
                     else:
-                        self.player_stay(player, stay_list, count)
+                        if p.cards_total < 17:
+                            self.player_hit(p, stay_list, count)
+                        else:
+                            self.player_stay(p, stay_list, count)
 
     def player_hit(self, player, stay_list, count):
         """
@@ -131,6 +136,10 @@ class Game:
         if player.cards_total > 21 and card.value == 11:
             card.value = 1
             player.cards_total -= 10
+        # Update status to Stay for Dealer if total exceeds 17 or more
+        if player.cards_total > 17 and player.player_name == "Dealer":
+            stay_list[count] = 'S'
+            player.status = 'Stay'
         if player.cards_total >= 21:
             stay_list[count] = 'S'
             if player.cards_total > 21:
