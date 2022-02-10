@@ -41,6 +41,7 @@ class Game:
         self.deal()
         self.print_stats()
         self.start_game()
+        self.start_dealer_game()
         self.evaluate_results()
         pass
 
@@ -149,13 +150,39 @@ class Game:
         player.status = 'Stay'
         self.print_stats()
 
+    def start_dealer_game(self):
+        """
+        This method plays for the dealer after all players have played their bets. This will hit
+        the deck if the total of dealer's cards is less than 17 and will stay once the total
+        exceeds 17.
+        """
+        dealer = self.players[-1]
+        while dealer.cards_total < 17:
+            card = self.deck.pop_one()
+            dealer.cards_total += card.value
+            if dealer.cards_total > 21 and card.value == 11:
+                card.value = 1
+                dealer.cards_total -= 10
+            if dealer.cards_total >= 21:
+                if dealer.cards_total > 21:
+                    dealer.status = 'Busted !!'
+                dealer.cards.append(card)
+                break
+            dealer.cards.append(card)
+        else:
+            dealer.status = 'Stay'
+
     def evaluate_results(self):
+        """
+        This method will filter the winners and losers using the filter method of Python.
+        """
         self.players.sort(key=lambda p: p.cards_total, reverse=True)
         os.system('cls' if os.name == 'nt' else 'clear')
         self.winners = filter(filter_winners, self.players)
         self.print_winners()
         self.losers = filter(filter_losers, self.players)
         self.print_losers()
+        print(f'Total cards in deck {len(self.deck.all_cards)}')
 
     def __str__(self):
         """
