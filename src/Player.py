@@ -14,7 +14,7 @@ class Player:
 
     def __str__(self):
         return f'{self.player_name} has {", ".join([str(card) for card in self.cards])}. ' \
-               f'Total {self.cards_total}. Status {self.status}'
+               f'Total: {self.cards_total}. Status: {self.status}'
 
 
 if __name__ == '__main__':

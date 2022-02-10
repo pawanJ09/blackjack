@@ -5,6 +5,22 @@ import globals as g
 import os
 
 
+def filter_winners(player):
+    if player.cards_total <= 21:
+        player.status = 'Winner !!'
+        return True
+    else:
+        return False
+
+
+def filter_losers(player):
+    if player.cards_total > 21:
+        player.status = 'Loser !!'
+        return True
+    else:
+        return False
+
+
 class Game:
 
     def __init__(self, deck=None, players=None):
@@ -12,9 +28,10 @@ class Game:
             players = []
         self.deck = deck
         self.players = players
-        self.player_rankings = []
+        self.winners = []
+        self.losers = []
 
-    def setup_game(self):
+    def play_game(self):
         """
         This method invokes helper methods to initialize the deck, players, deal the cards
         """
@@ -24,6 +41,7 @@ class Game:
         self.deal()
         self.print_stats()
         self.start_game()
+        self.evaluate_results()
         pass
 
     def stop(self):
@@ -34,10 +52,17 @@ class Game:
         print('Players ==> \n{}'.format("\n".join([str(player) for player in self.players
                                                    if player.player_name != "Dealer"])))
 
+    def print_winners(self):
+        print('Winners ==> \n{}'.format("\n".join([str(player) for player in self.winners])))
+
+    def print_losers(self):
+        print('Losers ==> \n{}'.format("\n".join([str(player) for player in self.losers])))
+
     def set_deck_and_players(self):
         """
         This method will initialize the playing deck and players
         """
+        os.system('cls' if os.name == 'nt' else 'clear')
         num_players = 0
         num_deck = 0
         while True:
@@ -125,7 +150,12 @@ class Game:
         self.print_stats()
 
     def evaluate_results(self):
-        pass
+        self.players.sort(key=lambda p: p.cards_total, reverse=True)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        self.winners = filter(filter_winners, self.players)
+        self.print_winners()
+        self.losers = filter(filter_losers, self.players)
+        self.print_losers()
 
     def __str__(self):
         """
@@ -138,4 +168,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.setup_game()
+    game.play_game()
