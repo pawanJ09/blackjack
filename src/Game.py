@@ -109,8 +109,9 @@ class Game:
             for count, p in enumerate(self.players):
                 if 'S' != stay_list[count]:
                     if p.player_name != "Dealer":
-                        player_choice = input(f'{p.player_name} Press H to Hit and S to Stay: ')
-                        if player_choice == 'H':
+                        player_choice = input(f'{p.player_name} Press H to Hit and any other key '
+                                              f'to Stay: ')
+                        if player_choice.upper() == 'H':
                             self.player_hit(p, stay_list, count)
                         else:
                             self.player_stay(p, stay_list, count)
@@ -158,28 +159,6 @@ class Game:
         stay_list[count] = 'S'
         player.status = 'Stay'
         self.print_stats()
-
-    def start_dealer_game(self):
-        """
-        This method plays for the dealer after all players have played their bets. This will hit
-        the deck if the total of dealer's cards is less than 17 and will stay once the total
-        exceeds 17.
-        """
-        dealer = self.players[-1]
-        while dealer.cards_total < 17:
-            card = self.deck.pop_one()
-            dealer.cards_total += card.value
-            if dealer.cards_total > 21 and card.value == 11:
-                card.value = 1
-                dealer.cards_total -= 10
-            if dealer.cards_total >= 21:
-                if dealer.cards_total > 21:
-                    dealer.status = 'Busted !!'
-                dealer.cards.append(card)
-                break
-            dealer.cards.append(card)
-        else:
-            dealer.status = 'Stay'
 
     def evaluate_results(self):
         """
