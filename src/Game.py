@@ -1,7 +1,7 @@
-from Card import Card
-from Deck import Deck
-from Player import Player
-import globals as g
+from src.Card import Card
+from src.Deck import Deck
+from src.Player import Player
+import src.globals as g
 import os
 
 
@@ -179,8 +179,3 @@ class Game:
         :return: string
         """
         return 'Game stats ==> \n{}'.format("\n".join([str(player) for player in self.players]))
-
-
-if __name__ == '__main__':
-    game = Game()
-    game.play_game()

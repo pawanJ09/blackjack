@@ -1,4 +1,4 @@
-import globals as g
+import src.globals as g
 
 
 class Card:

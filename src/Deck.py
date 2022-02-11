@@ -1,5 +1,5 @@
-import globals as g
-from Card import Card
+import src.globals as g
+from src.Card import Card
 from random import shuffle
 from itertools import product
 

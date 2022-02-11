@@ -1,5 +1,5 @@
-from Card import Card
-from Deck import Deck
+from src.Card import Card
+from src.Deck import Deck
 
 
 class Player:
