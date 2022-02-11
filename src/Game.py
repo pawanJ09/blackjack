@@ -66,8 +66,8 @@ class Game:
         num_deck = 0
         while True:
             try:
-                num_players = int(input('How many players would like to play this game? '))
-                num_deck = int(input('How many decks would you like to play with? '))
+                num_players = int(input('\nHow many players would like to play this game? '))
+                num_deck = int(input('\nHow many decks would you like to play with? '))
             except ValueError as error:
                 print('Please enter a valid number between 1-9')
                 continue
@@ -109,8 +109,8 @@ class Game:
             for count, p in enumerate(self.players):
                 if 'S' != stay_list[count]:
                     if p.player_name != "Dealer":
-                        player_choice = input(f'{p.player_name} Press H to Hit and any other key '
-                                              f'to Stay: ')
+                        player_choice = input('\n\n{} Press H to Hit and any other key to Stay: '
+                                              .format(p.player_name))
                         if player_choice.upper() == 'H':
                             self.player_hit(p, stay_list, count)
                         else:

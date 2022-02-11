@@ -23,12 +23,3 @@ class Deck:
     def shuffle_deck(self):
         shuffle(self.all_cards)
 
-
-if __name__ == '__main__':
-    d = Deck(1)
-    print(f'Initialized Deck\n{d}')
-    print('-'*20)
-    print('-'*20)
-    d.shuffle_deck()
-    print(f'Shuffled Deck\n{d}')
-

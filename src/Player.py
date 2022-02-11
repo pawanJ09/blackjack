@@ -15,12 +15,3 @@ class Player:
     def __str__(self):
         return f'{self.player_name} has {", ".join([str(card) for card in self.cards])}. ' \
                f'Total: {self.cards_total}. Status: {self.status}'
-
-
-if __name__ == '__main__':
-    player_cards = []
-    d = Deck(1)
-    for i in range(2):
-        player_cards.append(d.pop_one())
-    p = Player("Pawan", player_cards)
-    print(p)
